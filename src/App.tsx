@@ -1,6 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import Hls from "hls.js";
+import Globe from "./Globe";
+import { toGeoPoint } from "./geo";
+import type { GeoPoint } from "./geo";
 
 const API_URL = "http://127.0.0.1:8000";
 const RADIO_BROWSER_URL = "https://de1.api.radio-browser.info/json/stations/search";
@@ -13,6 +16,8 @@ interface Station {
   stream_url?: string;
   country?: string;
   countrycode?: string;
+  geo_lat?: number | null;
+  geo_long?: number | null;
   tags?: string;
   bitrate?: number;
 }
@@ -156,6 +161,11 @@ export default function App() {
   const hlsRef = useRef<Hls | null>(null);
   const playIdRef = useRef<number>(0);
   const fallbackRef = useRef<boolean>(false);
+
+  const globePoints = useMemo<GeoPoint[]>(
+    () => stations.map(toGeoPoint).filter((p): p is GeoPoint => p !== null),
+    [stations]
+  );
 
   const setFallback = (value: boolean) => {
     fallbackRef.current = value;
@@ -455,6 +465,16 @@ export default function App() {
 
         {status === "success" && stations.length > 0 && (
           <>
+            <Globe
+              points={globePoints}
+              total={stations.length}
+              activeId={currentStation?.stationuuid ?? null}
+              playing={isPlaying}
+              onSelect={(id) => {
+                const station = stations.find((s) => s.stationuuid === id);
+                if (station) void playStation(station);
+              }}
+            />
             <p className="results-count">
               <span className="mono">СТАНЦИЙ НАЙДЕНО — {stations.length}</span>
             </p>

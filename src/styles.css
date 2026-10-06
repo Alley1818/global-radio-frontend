@@ -748,3 +748,139 @@ input[type="range"]::-moz-range-thumb {
     transform: none;
   }
 }
+
+/* ============ Globe ============ */
+
+.globe-panel {
+  margin-bottom: 28px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(520px 260px at 50% 55%, var(--signal-soft), transparent),
+    var(--surface);
+}
+
+.globe-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.globe-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.globe-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+.globe-dot-approx {
+  opacity: 0.55;
+}
+
+.globe-stage {
+  position: relative;
+  height: 460px;
+}
+
+.globe-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+.globe-tooltip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 240px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(10, 11, 13, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translate(-50%, calc(-100% - 14px));
+  pointer-events: none;
+}
+
+.globe-tooltip strong {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.globe-tooltip span {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.globe-controls {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.globe-controls button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.globe-controls button:hover {
+  border-color: var(--signal);
+  background: var(--surface);
+}
+
+.globe-hint {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  color: var(--faint);
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .globe-stage {
+    height: 340px;
+  }
+
+  .globe-hint {
+    display: none;
+  }
+
+  .globe-legend {
+    display: none;
+  }
+}
